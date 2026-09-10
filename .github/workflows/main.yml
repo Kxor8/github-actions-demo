@@ -13,8 +13,8 @@ jobs:
       - name: List files on runner
         run: ls -la
       - name: Printing global env variable
-        run: echo "${{NAME}}"
-      - name: Printing secret using local variable
+        run: echo "${{env.NAME}}"
+      - name: Printing secret using shell local variable
         env:
           LOCAL_SEC_VAL_HOLDER: ${{secrets.MY_SECRET}}
         run: echo "$LOCAL_SEC_VAL_HOLDER"
