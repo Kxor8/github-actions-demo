@@ -53,8 +53,8 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v6
         with:
-      - name: build-assets-${{matrix.node-version}}
-        path: Artifact
+          name: build-assets-${{matrix.node-version}}
+          path: Artifact
       - name: Deploy project
         run: |
           echo "Deploying project..."
