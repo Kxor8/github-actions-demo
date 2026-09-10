@@ -1,0 +1,22 @@
+name : First workflow
+on: [push]
+env:
+  NAME: "kritika"
+jobs:
+  build:
+    runs-on: Ubuntu-latest
+    steps:
+      - name: Print hello
+        run: echo "Hello this is my first workflow"
+      - name: Checout the codes in my repo
+        run: actions/checkout@v4
+      - name: List files on runner
+        run: ls -la
+      - name: Printing global env variable
+        run: echo "${{NAME}}"
+      - name: Printing secret using local variable
+        env:
+          LOCAL_SEC_VAL_HOLDER: ${{secrets.MY_SECRET}}
+        run: echo "$LOCAL_SEC_VAL_HOLDER"
+      - name: printing secret from github directly
+        run: echo "${{secrets.MY_SECRET}}"
