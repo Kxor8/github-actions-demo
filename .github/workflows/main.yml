@@ -9,7 +9,7 @@ jobs:
       - name: Print hello
         run: echo "Hello this is my first workflow"
       - name: Checout the codes in my repo
-        run: actions/checkout@v4
+        uses: actions/checkout@v4
       - name: List files on runner
         run: ls -la
       - name: Printing global env variable
