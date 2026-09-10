@@ -5,11 +5,32 @@ env:
 jobs:
   build:
     runs-on: Ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20,22,24]
     steps:
       - name: Print hello
         run: echo "Hello this is my first workflow"
       - name: Checout the codes in my repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+      - name: Installing Node.js on the runner
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{matrix.node-version}}
+      - name: Install dependencies
+        run: npm install
+      - name: Build Artifact
+        run: |
+          mkdir Artifact
+          echo "This is the build artifact" >Artifact/build.txt
+      - name: Run tests
+        run: npm test
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: build-assets-${{matrix.node-version}}
+          path: Artifact
       - name: List files on runner
         run: ls -la
       - name: Printing global env variable
@@ -20,3 +41,22 @@ jobs:
         run: echo "$LOCAL_SEC_VAL_HOLDER"
       - name: printing secret from github directly
         run: echo "${{secrets.MY_SECRET}}"
+
+  deploy:
+    runs-on: Ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20,22,24]
+    needs: build
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v6
+        with:
+      - name: build-assets-${{matrix.node-version}}
+        path: Artifact
+      - name: Deploy project
+        run: |
+          echo "Deploying project..."
+          ls -R Artifact
+          echo "Deployment successful!"
