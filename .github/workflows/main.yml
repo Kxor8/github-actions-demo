@@ -8,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20,22,24]
+        node-version: [24]
     steps:
       - name: Print hello
         run: echo "Hello this is my first workflow"
@@ -26,6 +26,8 @@ jobs:
           echo "This is the build artifact" >Artifact/build.txt
       - name: Run tests
         run: npm test
+      - name: Run index.js
+        run: npm start
       - name: Upload Artifact
         uses: actions/upload-artifact@v6
         with:
@@ -47,7 +49,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20,22,24]
+        node-version: [24]
     needs: build
     steps:
       - name: Download Artifact
